@@ -1,0 +1,42 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: postgres-paciente-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    networks:
+      - paciente-network
+
+  # app:
+  #   build: .
+  #   container_name: api-p360
+  #   restart: always
+  #   ports:
+  #     - "${PORT}:3000"
+  #   depends_on:
+  #     - db
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     PORT: ${PORT}
+  #     BCRYPT_SALT: ${BCRYPT_SALT}
+  #     JWT_SECRET: ${JWT_SECRET}
+  #     DB_HOST: db
+  #     DB_PORT: ${DB_PORT}
+  #     DB_DATABASE: ${DB_DATABASE}
+  #     DB_USERNAME: ${DB_USERNAME}
+  #     DB_PASSWORD: ${DB_PASSWORD}
+  #   networks:
+  #     - paciente-network
+
+networks:
+  paciente-network:
+    name: paciente-network
+    driver: bridge
